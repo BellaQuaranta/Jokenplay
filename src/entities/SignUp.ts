@@ -16,9 +16,23 @@ export class SignUp extends User {
                     password,
                     role
                 })
+                .then(() => this.createConnection(id))
 
         } catch (error: any) {
-            throw new Error(error.message)
+            throw new Error(error.sql || error.message)
+        }
+    }
+
+    static async createConnection(id_user: string) {
+        try {
+            await SignUp.connection("jokenplay_connections")
+                .insert({
+                    id: id_user + "connection",
+                    id_user
+                })
+
+        } catch (error: any) {
+            throw new Error(error.sql || error.message)
         }
     }
 }
